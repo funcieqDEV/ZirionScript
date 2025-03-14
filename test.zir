@@ -1,0 +1,7 @@
+﻿import std::io;
+import std::conv;
+import std::linux;
+
+fn main() : int {
+	return 4/4;
+}

@@ -53,15 +53,30 @@ namespace Src.Frontend.Lexer
                 }
                 else if (Input[i] == ':')
                 {
-                    tokens.Add(new Token(row, col, TokenType.Colon, ":"));
-                    col++;
-                    i++;
+                    if (LookAhead() == ':')
+                    {
+                        tokens.Add(new Token(row, col, TokenType.DoubleColon, "::"));
+                        col += 2;
+                        i += 2;
+                    }
+                    else
+                    {
+                        tokens.Add(new Token(row, col, TokenType.Colon, ":"));
+                        col++;
+                        i++;
+                    }
                 }
                 else if (Input[i] == ';')
                 {
                     tokens.Add(new Token(row, col, TokenType.Semi, ";"));
                     col++;
                     i++; 
+                }
+                else if (Input[i] == ',')
+                {
+                    tokens.Add(new Token(row, col, TokenType.Comma, ","));
+                    col++;
+                    i++;
                 }
                 else if (Input[i] == '=')
                 {
@@ -304,7 +319,14 @@ namespace Src.Frontend.Lexer
         {
             return c == '-' || c == '+' || c == '/' || c == '*' || c == '%';
         }
-
+        private char LookAhead()
+        {
+            if (i + 1 < Input.Length)
+            {
+                return Input[i + 1];
+            }
+            return '\0';
+        }
         private Token ReadNumber()
         {
             uint startRow = row;
